@@ -1,0 +1,233 @@
+@use '../../styles/tokens' as *;
+
+.chat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  height: 100%;
+
+  &__scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-behavior: smooth;
+    @include thin-scrollbar;
+  }
+
+  &__inner {
+    max-width: $chat-max;
+    margin: 0 auto;
+    padding: 36px 28px 28px;
+
+    @include down($bp-sm) {
+      padding: 20px 14px 16px;
+    }
+  }
+
+  &__intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px 0 36px;
+    animation: fade-up 0.6s $ease both;
+
+    .voice-avatar {
+      animation: float 5s ease-in-out infinite;
+      box-shadow: 0 0 0 6px var(--accent-soft), var(--shadow-accent);
+    }
+  }
+
+  &__title {
+    margin: 18px 0 6px;
+    font-size: clamp(22px, 3vw, 28px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 14.5px;
+  }
+
+  &__hints {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 18px 0 0;
+    padding: 0;
+    list-style: none;
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 99px;
+      font-size: 12.5px;
+      color: var(--text-soft);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+  }
+
+  &__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  &__composer {
+    position: relative;
+    width: 100%;
+    max-width: calc(#{$chat-max} + 16px);
+    margin: 0 auto;
+    padding: 10px 20px 14px;
+
+    @include down($bp-sm) {
+      padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+    }
+  }
+
+  &__jump {
+    @include reset-button;
+    position: absolute;
+    top: -46px;
+    left: calc(50% - 18px);
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--text);
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-md);
+    animation: pop 0.25s $ease-spring both;
+  }
+
+  &__suggestions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, #000 90%, transparent);
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__suggestions-label {
+    flex-shrink: 0;
+    @include eyebrow;
+    font-size: 10.5px;
+  }
+
+  &__demo-banner {
+    @include reset-button;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 10px 16px;
+    border-radius: $radius;
+    font-size: 13px;
+    text-align: start;
+    color: var(--text-soft);
+    background: var(--warn-soft);
+    border: 1px solid color-mix(in srgb, var(--warn) 40%, transparent);
+    transition: transform 0.2s $ease;
+
+    strong {
+      color: var(--warn);
+    }
+
+    &:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  &__demo-dot {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--warn);
+  }
+
+  &__mode {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+
+    span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    &--live {
+      color: var(--success);
+      span {
+        background: var(--success);
+        box-shadow: 0 0 0 3px var(--success-soft);
+      }
+    }
+
+    &--demo {
+      color: var(--warn);
+      span {
+        background: var(--warn);
+      }
+    }
+  }
+
+  &__footnote {
+    margin: 8px 0 0;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-muted);
+
+
+    @include down($bp-sm) {
+      display: none;
+    }
+  }
+}
+
+.suggestion {
+  @include reset-button;
+  flex-shrink: 0;
+  max-width: 280px;
+  padding: 7px 13px;
+  border-radius: 99px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-soft);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: color 0.2s $ease, border-color 0.2s $ease, background 0.2s $ease, transform 0.2s $ease;
+
+  &:hover:not(:disabled) {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

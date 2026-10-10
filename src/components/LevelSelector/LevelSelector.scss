@@ -1,0 +1,100 @@
+@use '../../styles/tokens' as *;
+
+.level-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__track {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+
+    @include down($bp-sm) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__description {
+    margin: 0;
+    padding: 12px 16px;
+    border-radius: $radius-sm;
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    color: var(--text-soft);
+    font-size: 14px;
+    animation: fade-in 0.35s $ease;
+
+    strong {
+      color: var(--text);
+    }
+  }
+}
+
+.level-chip {
+  @include reset-button;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 14px 14px 18px;
+  border-radius: $radius;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: transform 0.2s $ease, border-color 0.2s $ease, background 0.2s $ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    background: var(--surface-3);
+  }
+
+  &__id {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  &__title {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  &__bar {
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 8px;
+    height: 3px;
+    border-radius: 99px;
+    background: var(--surface-3);
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--grad);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s $ease;
+    }
+  }
+
+  &.is-filled &__bar::after {
+    transform: scaleX(1);
+  }
+
+  &.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 1px var(--accent) inset;
+  }
+
+  &.is-selected &__id {
+    @include gradient-text;
+  }
+}

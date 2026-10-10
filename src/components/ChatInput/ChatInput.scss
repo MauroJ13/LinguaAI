@@ -1,0 +1,106 @@
+@use '../../styles/tokens' as *;
+
+.chat-input {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px;
+  border-radius: $radius-xl;
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  transition: border-color 0.2s $ease, box-shadow 0.2s $ease;
+
+  &:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft), var(--shadow-lg);
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    max-height: 160px;
+    padding: 11px 6px;
+    border: 0;
+    outline: none !important;
+    resize: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.4;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+
+  &__mic,
+  &__send {
+    @include reset-button;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    transition: transform 0.2s $ease, opacity 0.2s $ease, box-shadow 0.2s $ease, background 0.2s $ease;
+  }
+
+  &__mic {
+    color: var(--text-soft);
+    background: var(--surface-2);
+
+    &:hover:not(:disabled) {
+      color: var(--text);
+      background: var(--surface-3);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    &.is-active {
+      color: #fff;
+      background: var(--danger);
+      animation: mic-pulse 1.4s ease-out infinite;
+    }
+  }
+
+  &__send {
+    color: #fff;
+    background: var(--grad);
+    box-shadow: var(--shadow-accent);
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px) scale(1.05);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    &:disabled {
+      opacity: 0.35;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@keyframes mic-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--danger) 55%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 12px transparent;
+  }
+}
+
+/* SCSS-Sendebutton zeigt in RTL-Sprachen nach links */
+[dir='rtl'] .chat-input__send svg {
+  transform: scaleX(-1);
+}

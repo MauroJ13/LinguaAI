@@ -1,0 +1,51 @@
+@use '../../styles/tokens' as *;
+
+.toast {
+  position: fixed;
+  z-index: 200;
+  left: 50%;
+  top: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(520px, calc(100vw - 32px));
+  padding: 10px 10px 10px 16px;
+  border-radius: $radius;
+  font-size: 13.5px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  transform: translateX(-50%);
+  animation: toast-in 0.35s $ease-spring both;
+
+  &__text {
+    flex: 1;
+  }
+
+  &__close {
+    @include reset-button;
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: var(--text-muted);
+
+    &:hover {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}

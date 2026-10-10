@@ -1,0 +1,226 @@
+@use '../../styles/tokens' as *;
+
+.ai-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  &__status {
+    margin: 0;
+    font-size: 13px;
+    color: var(--text-muted);
+
+    &--ok {
+      color: var(--success);
+      font-weight: 700;
+    }
+
+    &--error {
+      color: var(--danger);
+      font-weight: 600;
+    }
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border);
+  }
+
+  &__label {
+    @include eyebrow;
+  }
+
+}
+
+.ai-option {
+  @include reset-button;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: $radius;
+  text-align: start;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s $ease, background 0.2s $ease;
+
+  strong,
+  small {
+    display: block;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+
+  small {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  &__check {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    color: transparent;
+  }
+
+  &.is-selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  &.is-selected &__check {
+    border-color: transparent;
+    background: var(--grad);
+    color: #fff;
+  }
+
+  a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+  }
+}
+
+.ai-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: $radius;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  strong,
+  small {
+    display: block;
+  }
+
+  strong {
+    font-size: 14px;
+  }
+
+  small {
+    font-size: 12.5px;
+    color: var(--text-muted);
+  }
+
+  &__switch {
+    position: relative;
+    flex-shrink: 0;
+    width: 40px;
+    height: 24px;
+    border-radius: 99px;
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+    transition: background 0.2s $ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      inset-inline-start: 2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      transition: transform 0.25s $ease-spring;
+    }
+  }
+
+  input:checked + &__switch {
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  input:checked + &__switch::after {
+    transform: translateX(16px);
+  }
+
+  input:focus-visible + &__switch {
+    @include focus-ring;
+  }
+}
+
+[dir='rtl'] .ai-toggle input:checked + .ai-toggle__switch::after {
+  transform: translateX(-16px);
+}
+
+/* ---------- Verbunden ---------- */
+.ai-panel {
+  &__connected {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: $radius;
+    background: var(--success-soft);
+    border: 1px solid color-mix(in srgb, var(--success) 35%, transparent);
+
+    h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-soft);
+    }
+  }
+
+  &__connected-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--success);
+  }
+
+  &__credits {
+    margin-top: 8px !important;
+    font-size: 12.5px !important;
+    color: var(--text-muted) !important;
+
+    a {
+      color: var(--accent);
+      font-weight: 700;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__actions {
+    align-items: center;
+  }
+}

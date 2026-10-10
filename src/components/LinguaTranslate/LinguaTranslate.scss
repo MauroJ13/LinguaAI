@@ -1,0 +1,972 @@
+@use '../../styles/tokens' as *;
+
+/* =========================================================================
+   Lingua Translate – nutzt die vorhandenen Design-Tokens (Farben, Radien,
+   Schatten, Verläufe) von LinguaAI. Präfix: .lt-
+   ========================================================================= */
+
+/* ---------- Gemeinsame Bausteine ---------- */
+
+.lt-logo {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  color: #fff;
+  background: var(--grad);
+  box-shadow: var(--shadow-accent);
+}
+
+.lt-icon-btn {
+  @include reset-button;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--text-soft);
+  transition: background 0.2s $ease, color 0.2s $ease, transform 0.15s $ease;
+
+  &:hover:not(:disabled) {
+    color: var(--text);
+    background: var(--surface-3);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+/* ---------- Sprachleiste ---------- */
+
+.lt-langbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+}
+
+.lt-swap {
+  @include reset-button;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid transparent;
+  transition: transform 0.35s $ease-spring, background 0.2s $ease, border-color 0.2s $ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--accent);
+    transform: rotate(180deg);
+  }
+
+  &:active:not(:disabled) {
+    transform: rotate(180deg) scale(0.9);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+/* ---------- Sprachauswahl ---------- */
+
+.lt-picker {
+  position: relative;
+  min-width: 0;
+
+  &__trigger {
+    @include reset-button;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 6px 12px 6px 8px;
+    border-radius: $radius;
+    text-align: start;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    transition: border-color 0.2s $ease, background 0.2s $ease;
+
+    &:hover {
+      background: var(--surface-3);
+      border-color: var(--border-strong);
+    }
+  }
+
+  &.is-open &__trigger {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  &__flag {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 19px;
+    line-height: 1;
+    background: var(--surface);
+
+    &--auto {
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+
+  &__name {
+    font-size: 14.5px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__detected {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    animation: fade-in 0.3s $ease both;
+  }
+
+  &__chevron {
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform 0.25s $ease;
+  }
+
+  &.is-open &__chevron {
+    transform: rotate(180deg);
+  }
+
+  &__popover {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 8px);
+    inset-inline-start: 0;
+    display: flex;
+    flex-direction: column;
+    width: max(100%, 290px);
+    max-height: 340px;
+    padding: 8px;
+    border-radius: $radius;
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg);
+    animation: pop 0.18s $ease both;
+    transform-origin: top center;
+  }
+
+  &__search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    height: 42px;
+    padding: 0 12px;
+    margin-bottom: 6px;
+    border-radius: $radius-sm;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+
+    &:focus-within {
+      border-color: var(--accent);
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      height: 100%;
+      border: 0;
+      outline: none !important;
+      background: none;
+      font-size: 14px;
+    }
+  }
+
+  &__list {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    @include thin-scrollbar;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 8px;
+    border-radius: $radius-sm;
+    cursor: pointer;
+
+    &.is-active {
+      background: var(--surface-3);
+    }
+
+    &.is-selected {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .lt-picker__flag {
+      width: 28px;
+      height: 28px;
+      font-size: 17px;
+      background: var(--surface-2);
+    }
+  }
+
+  &__option-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    font-size: 14px;
+
+    small {
+      align-self: flex-start; // RTL-Namen (z. B. Hebräisch) nicht an den rechten Rand schieben
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+  }
+
+  &__check {
+    flex-shrink: 0;
+  }
+
+  &__empty {
+    padding: 16px 8px;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--text-muted);
+  }
+
+  &__sheet-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 4px 10px 8px;
+
+    strong {
+      font-size: 17px;
+      font-weight: 800;
+    }
+  }
+
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 4;
+    background: rgba(5, 6, 12, 0.5);
+    backdrop-filter: blur(2px);
+    animation: fade-in 0.2s $ease both;
+  }
+
+  /* Smartphone: Auswahl als Bottom-Sheet */
+  &--sheet &__popover {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-height: min(78dvh, 640px);
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+    border-radius: $radius-xl $radius-xl 0 0;
+    animation: lt-sheet-up 0.32s $ease backwards;
+  }
+
+  &--sheet &__option {
+    min-height: 52px;
+    padding: 8px 10px;
+  }
+
+  &--sheet &__search {
+    height: 48px;
+
+    input {
+      font-size: 16px; // verhindert Auto-Zoom auf iOS
+    }
+  }
+}
+
+/* ---------- Ein- und Ausgabe ---------- */
+
+.lt-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.lt-pane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border-radius: $radius-lg;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.2s $ease, box-shadow 0.2s $ease;
+
+  &--source {
+    background: var(--surface-2);
+
+    &:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+  }
+
+  &--result {
+    background:
+      linear-gradient(160deg, var(--accent-soft), transparent 55%),
+      var(--surface-2);
+  }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 50px;
+    padding: 6px 8px 6px 6px;
+    border-top: 1px solid var(--border);
+  }
+}
+
+.lt-input {
+  display: block;
+  width: 100%;
+  min-height: 210px;
+  max-height: 46vh;
+  flex: 1;
+  padding: 16px 52px 16px 18px;
+  border: 0;
+  outline: none !important;
+  resize: none;
+  background: transparent;
+  font-size: 17px;
+  line-height: 1.55;
+  @include thin-scrollbar;
+
+  &::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+.lt-clear {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  width: 34px;
+  height: 34px;
+  animation: pop 0.2s $ease both;
+}
+
+[dir='rtl'] .lt-input {
+  padding: 16px 18px 16px 52px;
+}
+
+.lt-result {
+  flex: 1;
+  min-height: 210px;
+  max-height: 46vh;
+  padding: 16px 18px;
+  overflow-y: auto;
+  @include thin-scrollbar;
+}
+
+.lt-output {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 500;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  animation: fade-in 0.35s $ease both;
+  transition: opacity 0.25s $ease;
+
+  &.is-stale {
+    opacity: 0.5;
+  }
+}
+
+.lt-placeholder {
+  margin: 0;
+  font-size: 17px;
+  color: var(--text-muted);
+}
+
+.lt-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 4px;
+
+  span {
+    height: 14px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--surface-3) 0%, var(--surface-hover) 40%, var(--surface-3) 80%);
+    background-size: 200% 100%;
+    animation: lt-shimmer 1.3s linear infinite;
+
+    &:nth-child(1) {
+      width: 92%;
+    }
+    &:nth-child(2) {
+      width: 76%;
+    }
+    &:nth-child(3) {
+      width: 48%;
+    }
+  }
+}
+
+.lt-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s $ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 40%;
+    border-radius: 99px;
+    background: var(--grad);
+    animation: lt-progress 1.1s $ease infinite;
+  }
+
+  .is-loading > & {
+    opacity: 1;
+  }
+}
+
+.lt-error {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  border-radius: $radius;
+  color: var(--danger);
+  background: var(--danger-soft);
+  animation: fade-up 0.3s $ease both;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+}
+
+.lt-retry {
+  height: 36px;
+  padding: 0 16px;
+  font-size: 13.5px;
+}
+
+.lt-hint {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lt-count {
+  flex-shrink: 0;
+  padding-inline-end: 8px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.lt-copy {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 15px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text-soft);
+  border: 1px solid var(--border-strong);
+  transition: background 0.2s $ease, color 0.2s $ease, border-color 0.2s $ease, transform 0.15s $ease;
+
+  &:hover:not(:disabled) {
+    color: var(--text);
+    background: var(--surface-3);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+
+  &.is-copied {
+    color: var(--success);
+    border-color: var(--success);
+    background: var(--success-soft);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.lt-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* =========================================================================
+   Desktop: schwebendes Fenster
+   ========================================================================= */
+
+.lt-window {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  width: min(780px, calc(100vw - 32px));
+  will-change: transform;
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 0 16px 12px;
+    border-radius: $radius-xl;
+    background: color-mix(in srgb, var(--surface) 94%, transparent);
+    backdrop-filter: blur(22px) saturate(1.5);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent-soft);
+    animation: lt-window-in 0.32s $ease-spring backwards;
+    transition: box-shadow 0.2s $ease, transform 0.2s $ease;
+  }
+
+  &.is-dragging &__inner {
+    box-shadow: 0 40px 90px -24px rgba(0, 0, 0, 0.75), 0 0 0 1px var(--accent);
+  }
+
+  &.is-dragging {
+    user-select: none;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 -16px;
+    padding: 14px 14px 12px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+
+    .is-dragging & {
+      cursor: grabbing;
+    }
+  }
+
+  &__title {
+    min-width: 0;
+
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      @include gradient-text;
+    }
+
+    p {
+      margin: 0;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 2px;
+    margin-inline-start: auto;
+  }
+
+  &__foot {
+    font-size: 11.5px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+}
+
+.lt-grip {
+  @include reset-button;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: $radius-xs;
+  color: var(--text-muted);
+  cursor: grab;
+  touch-action: none;
+
+  &:hover {
+    color: var(--text);
+    background: var(--surface-3);
+  }
+}
+
+/* ---------- Minimierte Blase ---------- */
+
+.lt-bubble {
+  position: fixed;
+  z-index: 55;
+  top: 0;
+  left: 0;
+  will-change: transform;
+
+  &__btn {
+    @include reset-button;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    color: #fff;
+    background: var(--grad);
+    box-shadow: var(--shadow-accent), 0 0 0 4px var(--accent-soft);
+    cursor: grab;
+    touch-action: none;
+    animation: lt-bubble-in 0.4s $ease-spring backwards;
+    transition: transform 0.2s $ease, box-shadow 0.2s $ease;
+
+    &:hover {
+      transform: scale(1.06);
+      box-shadow: var(--shadow-accent), 0 0 0 6px var(--accent-soft);
+    }
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--accent-2);
+      outline-offset: 3px;
+    }
+  }
+
+  &.is-dragging &__btn {
+    cursor: grabbing;
+    transform: scale(1.08);
+  }
+
+  &__dot {
+    position: absolute;
+    top: 3px;
+    inset-inline-end: 3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--success);
+    border: 2px solid var(--bg);
+
+    &.is-pending {
+      background: var(--warn);
+      animation: lt-pulse 1.2s ease-in-out infinite;
+    }
+  }
+}
+
+/* =========================================================================
+   Smartphone: eigene Vollbild-Seite
+   ========================================================================= */
+
+.lt-page {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(420px 260px at 20% 0%, var(--glow-1), transparent 70%),
+    var(--bg);
+  animation: lt-page-in 0.32s $ease backwards;
+
+  &__head {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) 48px;
+    align-items: center;
+    flex-shrink: 0;
+    height: calc(60px + env(safe-area-inset-top));
+    padding: env(safe-area-inset-top) 8px 0;
+    background: var(--glass);
+    backdrop-filter: blur(18px) saturate(1.4);
+    -webkit-backdrop-filter: blur(18px) saturate(1.4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__back {
+    @include reset-button;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: var(--text);
+    transition: background 0.2s $ease;
+
+    &:active {
+      background: var(--surface-3);
+    }
+
+    [dir='rtl'] & svg {
+      transform: scaleX(-1);
+    }
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 0;
+
+    .lt-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom));
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__credits {
+    margin: 18px 0 0;
+    font-size: 11.5px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  /* Layout auf dem Smartphone: alles untereinander, große Touch-Flächen */
+  .lt-panel {
+    gap: 16px;
+  }
+
+  .lt-langbar {
+    position: sticky;
+    top: -16px;
+    z-index: 3;
+    margin: -16px -16px 0;
+    padding: 12px 16px;
+    gap: 8px;
+    background: var(--bg);
+  }
+
+  .lt-picker__trigger {
+    min-height: 52px;
+    padding: 6px 10px 6px 6px;
+    gap: 8px;
+  }
+
+  .lt-picker__name {
+    font-size: 14px;
+  }
+
+  .lt-picker__flag {
+    width: 28px;
+    height: 28px;
+    font-size: 17px;
+  }
+
+  @media (max-width: 420px) {
+    .lt-picker__trigger .lt-picker__chevron {
+      display: none;
+    }
+  }
+
+  .lt-swap {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lt-panes {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .lt-input {
+    min-height: 150px;
+    max-height: none;
+    font-size: 18px; // ≥ 16px: kein Auto-Zoom beim Tippen auf iOS
+    overflow: hidden;
+    scroll-margin-top: 90px;
+  }
+
+  .lt-result {
+    min-height: 140px;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .lt-output,
+  .lt-placeholder {
+    font-size: 19px;
+  }
+
+  .lt-icon-btn {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lt-copy {
+    height: 44px;
+    padding: 0 18px;
+  }
+
+  .lt-pane__foot {
+    min-height: 56px;
+  }
+}
+
+/* ---------- Animationen ---------- */
+
+@keyframes lt-window-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lt-bubble-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lt-page-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes lt-sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes lt-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes lt-progress {
+  from {
+    left: -40%;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes lt-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}

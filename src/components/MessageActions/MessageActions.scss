@@ -1,0 +1,103 @@
+@use '../../styles/tokens' as *;
+
+.message-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+
+  &--user {
+    justify-content: flex-end;
+  }
+}
+
+.action-btn {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px 0 9px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: color 0.2s $ease, background 0.2s $ease, border-color 0.2s $ease, transform 0.2s $ease;
+
+  &__icon {
+    font-size: 14px;
+    line-height: 1;
+    transition: transform 0.3s $ease-spring;
+  }
+
+  &:hover {
+    color: var(--text);
+    border-color: var(--border-strong);
+    background: var(--surface-3);
+    transform: translateY(-1px);
+  }
+
+  &:hover &__icon {
+    transform: scale(1.18) rotate(-6deg);
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.97);
+  }
+
+  &.is-active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  @include down($bp-sm) {
+    &__label {
+      display: none;
+    }
+    padding: 0 10px;
+  }
+}
+
+/* Status der automatischen Analyse (💡) */
+.action-btn {
+  &__badge {
+    margin-inline-start: 2px;
+    padding: 1px 7px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  &__spinner {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    border-top-color: var(--accent);
+    animation: spin 0.8s linear infinite;
+  }
+
+  &--analysis.is-correction {
+    border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  }
+  &--analysis.is-correction &__badge {
+    color: var(--danger);
+    background: var(--danger-soft);
+  }
+
+  &--analysis.is-tip {
+    border-color: color-mix(in srgb, var(--warn) 45%, transparent);
+  }
+  &--analysis.is-tip &__badge {
+    color: var(--warn);
+    background: var(--warn-soft);
+  }
+
+  &--analysis.is-ok &__badge {
+    color: var(--success);
+    background: var(--success-soft);
+  }
+}

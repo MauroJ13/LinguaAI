@@ -1,0 +1,39 @@
+@use '../../styles/tokens' as *;
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+
+  &__mark {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: var(--grad);
+    box-shadow: var(--shadow-accent), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    padding: 3px;
+  }
+
+  &__text {
+    font-size: 19px;
+  }
+
+  &__ai {
+    @include gradient-text;
+  }
+
+  &--lg &__mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  &--lg &__text {
+    font-size: 24px;
+  }
+}

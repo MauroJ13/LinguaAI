@@ -1,0 +1,190 @@
+@use '../../styles/tokens' as *;
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 100%;
+  animation: fade-up 0.4s $ease both;
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    max-width: min(640px, 82%);
+
+    @include down($bp-sm) {
+      max-width: 88%;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0 4px 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  &__author {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: var(--text-soft);
+  }
+
+  &__badge {
+    padding: 1px 6px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  &__bubble {
+    position: relative;
+    padding: 14px 18px;
+    font-size: 16.5px;
+    line-height: 1.55;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    border-radius: 22px;
+    transition: box-shadow 0.25s $ease, border-color 0.25s $ease;
+  }
+
+  &__avatar-user {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-soft);
+    background: var(--surface-3);
+    border: 1px solid var(--border-strong);
+  }
+
+  /* ---------- KI ---------- */
+  &--ai &__bubble {
+    background: var(--ai-bubble);
+    border: 1px solid var(--border);
+    border-top-left-radius: 8px;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* ---------- Nutzer ---------- */
+  &--user {
+    flex-direction: row-reverse;
+  }
+
+  &--user &__body {
+    align-items: flex-end;
+  }
+
+  &--user &__meta {
+    flex-direction: row-reverse;
+  }
+
+  &--user &__bubble {
+    background: var(--user-bubble);
+    color: var(--user-text);
+    border: 1px solid transparent;
+    border-top-right-radius: 8px;
+    box-shadow: var(--shadow-accent);
+  }
+
+  /* Nachricht, deren Info gerade in der Sidebar steht */
+  &.is-active &__bubble {
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--accent), var(--shadow-md);
+  }
+
+  /* Aktionen dezent, bis man über die Nachricht fährt */
+  .message-actions {
+    opacity: 0.72;
+    transition: opacity 0.2s $ease;
+  }
+  &:hover .message-actions,
+  &:focus-within .message-actions,
+  &.is-active .message-actions {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .message-actions {
+      opacity: 1;
+    }
+  }
+
+  &__speaking {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 6px 12px 6px 10px;
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    font-family: inherit;
+    cursor: pointer;
+    animation: pop 0.3s $ease-spring both;
+  }
+
+  &__speaking-voice {
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  &__wave {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    height: 14px;
+
+    i {
+      display: block;
+      width: 3px;
+      height: 100%;
+      border-radius: 2px;
+      background: currentColor;
+      animation: wave 0.9s ease-in-out infinite;
+
+      &:nth-child(2) {
+        animation-delay: -0.3s;
+      }
+      &:nth-child(3) {
+        animation-delay: -0.6s;
+      }
+      &:nth-child(4) {
+        animation-delay: -0.15s;
+      }
+      &:nth-child(5) {
+        animation-delay: -0.45s;
+      }
+    }
+  }
+}
+
+.chat-notice {
+  display: flex;
+  justify-content: center;
+  animation: fade-in 0.4s $ease both;
+
+  span {
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+}

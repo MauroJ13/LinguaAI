@@ -1,0 +1,33 @@
+@use '../../styles/tokens' as *;
+
+.chat-page {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  overflow: hidden;
+
+  &__glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(600px 380px at 30% 0%, var(--glow-1), transparent 70%),
+      radial-gradient(520px 360px at 70% 100%, var(--glow-2), transparent 70%);
+  }
+
+  &__main {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) $sidebar-width;
+    min-height: 0;
+
+    @include down($bp-lg) {
+      grid-template-columns: minmax(0, 1fr) 320px;
+    }
+
+    @include down($bp-md) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

@@ -1,0 +1,300 @@
+@use '../../styles/tokens' as *;
+
+.app-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 68px;
+  padding: 0 22px;
+  background: var(--glass);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border-bottom: 1px solid var(--border);
+
+  @include down($bp-sm) {
+    height: 60px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  &__left,
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__divider {
+    width: 1px;
+    height: 24px;
+    background: var(--border-strong);
+
+    @include down($bp-sm) {
+      display: none;
+    }
+  }
+
+  @include down($bp-sm) {
+    .logo__text {
+      display: none;
+    }
+  }
+}
+
+.session-pill {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px 0 10px;
+  border-radius: 99px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s $ease, border-color 0.2s $ease;
+
+  &:hover {
+    background: var(--surface-3);
+    border-color: var(--border-strong);
+  }
+
+  &__flag {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  &__dot {
+    color: var(--text-muted);
+  }
+
+  &__level {
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 800;
+    color: #fff;
+    background: var(--grad);
+  }
+}
+
+.voice-pill {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 14px 0 11px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  transition: background 0.2s $ease, color 0.2s $ease;
+
+  &:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  @include down($bp-sm) {
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+.icon-btn {
+  @include reset-button;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--text-soft);
+  border: 1px solid var(--border);
+  transition: background 0.2s $ease, color 0.2s $ease, transform 0.3s $ease;
+
+  &:hover {
+    color: var(--text);
+    background: var(--surface-2);
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+}
+
+.settings-btn {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--surface-3);
+  border: 1px solid var(--border-strong);
+  transition: background 0.2s $ease, transform 0.2s $ease;
+
+  &:hover {
+    background: var(--surface-hover);
+    transform: translateY(-1px);
+  }
+
+  @include down($bp-sm) {
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+    span {
+      display: none;
+    }
+  }
+}
+
+.mode-pill {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 99px;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: transform 0.2s $ease;
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  &--live {
+    color: var(--success);
+    background: var(--success-soft);
+  }
+
+  &--live &__dot {
+    background: var(--success);
+    animation: live-pulse 2s ease-out infinite;
+  }
+
+  &--demo {
+    color: var(--warn);
+    background: var(--warn-soft);
+  }
+
+  &--demo &__dot {
+    background: var(--warn);
+  }
+
+  @include down($bp-sm) {
+    padding: 0 10px;
+    &__label {
+      display: none;
+    }
+  }
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+
+/* ---------- Lingua Translate ---------- */
+.translate-pill {
+  @include reset-button;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 15px 0 12px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--text);
+  background:
+    linear-gradient(var(--surface-2), var(--surface-2)) padding-box,
+    var(--grad) border-box;
+  border: 1px solid transparent;
+  transition: transform 0.2s $ease, box-shadow 0.2s $ease, background 0.2s $ease;
+
+  svg {
+    color: var(--accent);
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-accent);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  &.is-active {
+    color: #fff;
+    background: var(--grad) border-box;
+
+    svg {
+      color: #fff;
+    }
+  }
+
+  @include down($bp-lg) {
+    width: 38px;
+    padding: 0;
+    justify-content: center;
+
+    span {
+      display: none;
+    }
+  }
+}
+
+/* ---------- Smartphone: Kopfzeile kompakt halten (kein horizontales Scrollen) ---------- */
+@include down($bp-sm) {
+  .session-pill {
+    padding: 0 10px 0 8px;
+    gap: 6px;
+
+    &__lang,
+    &__dot {
+      display: none;
+    }
+  }
+
+  // Status steht auch unter dem Eingabefeld des Chats
+  .mode-pill {
+    display: none;
+  }
+
+  .app-header__right {
+    gap: 6px;
+  }
+}
